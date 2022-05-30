@@ -106,7 +106,8 @@ function play() {
                 left = false;
                 break;
             case 38: 
-            case 76: 
+            case 76:
+            case 87:
                 up = false; 
                 break;
             case 39: 
