@@ -29,12 +29,19 @@ function scale() {
 scale();
 
 function thing() {
-    const music = new Audio("thing.mp3");
+    let r = Math.floor(Math.random() * 3);
+    let music = new Audio(["thing.mp3", "Canon in D (128 kbps).mp3", "Serenade (128 kbps).mp3"][r]);
+    
     if (m) {        
         music.play();
-        music.loop =true;
+        music.loop = false;
     }
     m = false;
+
+    let duration;
+    music.addEventListener("loadeddata", function() {duration = music.duration});
+    let end_time = Date.now() + duration;
+
 }
 
 function start() {
