@@ -7,6 +7,8 @@ let context = canvas.getContext("2d");
 let width;
 let height;
 
+// let pause = false;
+
 canvas.addEventListener("click", thing);
 
 // SCALE TO SCREEN SIZE  1536 * 763
@@ -84,8 +86,7 @@ function play() {
                 left = true; 
                 break;
             case 38:
-            case 76:
-            case 87:
+            case 76: 
                 up = true; 
                 break;
             case 39: 
@@ -96,6 +97,9 @@ function play() {
             case 83: 
                 down = true; 
                 break;
+            case 80:
+                console.log('pressing');
+                pause = pause == true ? false : true;
             }
         }
     function key_up(e) {
@@ -106,8 +110,7 @@ function play() {
                 left = false;
                 break;
             case 38: 
-            case 76:
-            case 87:
+            case 76: 
                 up = false; 
                 break;
             case 39: 
@@ -183,7 +186,8 @@ function play() {
     // SQUARE
     class square {
         constructor() {
-            this.size = random(height) * random(100)/100 * 0.3;
+            // this.size = random(height) * random(100)/100 * 0.3;
+            this.size = random(height) * 0.25;
             this.x;
             this.y;
             this.x_direction = 0;
@@ -262,12 +266,16 @@ function play() {
             this.border = "white";
             
             this.max_speed = 500;
-            this.a = 0.005 * width;
+            this.a = this.get_a()
             this.up_speed = 0;
             this.down_speed = 0;
             this.left_speed = 0;
             this.right_speed = 0;
             
+        }
+
+        get_a() {
+            return 0.005 * width;
         }
         
         pos() {  // d = s * t  => xy = speed * t
@@ -373,14 +381,52 @@ function play() {
     let p = new player();
     let s = new square();
     squares.push(s);
-    
-    setInterval(function() {
-        if (squares.length < 99) {
-            squares.push(new square());
-        }
-    }, 600);
+    let spawn_square;
+
+    function sspawn() {
+        spawn_square = setInterval(function() {
+            if (squares.length < 99) {
+                squares.push(new square());
+            }
+        }, 700); // was 600
+    }
+
+    let pause_speed = [0];
+    let pause = false;
         
     function game_loop() {
+
+        // ================= PAUSE ===================== //
+        console.log(pause);
+
+        if (pause) {
+            if (pause_speed.length == 0) {
+                for (let square of squares) {
+                    pause_speed.push(square.speed);
+                    square.speed = 0;
+                }
+  
+                clearInterval(spawn_square);
+            }
+
+            p.up_speed = 0;
+            p.down_speed = 0;
+            p.left_speed = 0;
+            p.right_speed = 0;
+        }
+
+        else {
+            if (pause_speed.length != 0) {
+                for (let i in squares) {
+                    squares[i].speed = pause_speed[i];
+                }
+                
+                pause_speed = [];
+                sspawn();
+            }
+            
+        }
+
         context.clearRect(0, 0, width, height);
 
         // ======================= BOOST ==================== //
