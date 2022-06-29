@@ -7,14 +7,14 @@ let context = canvas.getContext("2d");
 let width;
 let height;
 
-// let pause = false;
+let end_time = Date.now();  // for music
 
 canvas.addEventListener("click", thing);
 
 // SCALE TO SCREEN SIZE  1536 * 763
 function scale() {
-    height = window.innerHeight / 1.18;
-    width = height * 1.6;
+    height = window.innerHeight / 1.18;  // 1.18
+    width = height * 1.6;  // 1.6
     
     // if (width < 1024) {
     //     width = window.innerWidth - 10;
@@ -29,19 +29,21 @@ function scale() {
 scale();
 
 function thing() {
-    let r = Math.floor(Math.random() * 3);
-    let music = new Audio(["thing.mp3", "Canon in D (128 kbps).mp3", "Serenade (128 kbps).mp3"][r]);
-    
-    if (m) {        
-        music.play();
-        music.loop = false;
+    if (end_time < Date.now()) {
+
+        let r = Math.floor(Math.random() * 3);
+        let music = new Audio(["thing.mp3", "Canon in D (128 kbps).mp3", "Serenade (128 kbps).mp3"][r]);
+
+        if (m) {        
+            music.play();
+            music.loop = false;
+        }
+        m = false;
+
+        let duration;
+        music.addEventListener("loadeddata", function() {duration = music.duration});
+        end_time = Date.now() + duration;
     }
-    m = false;
-
-    let duration;
-    music.addEventListener("loadeddata", function() {duration = music.duration});
-    let end_time = Date.now() + duration;
-
 }
 
 function start() {
@@ -193,8 +195,8 @@ function play() {
     // SQUARE
     class square {
         constructor() {
-            // this.size = random(height) * random(100)/100 * 0.3;
-            this.size = random(height) * 0.25;
+            this.size = random(height) * random(100)/100 * 0.3;
+            // this.size = random(height) * 0.3;
             this.x;
             this.y;
             this.x_direction = 0;
@@ -395,7 +397,7 @@ function play() {
             if (squares.length < 99) {
                 squares.push(new square());
             }
-        }, 700); // was 600
+        }, 600); // was 600
     }
 
     let pause_speed = [0];
