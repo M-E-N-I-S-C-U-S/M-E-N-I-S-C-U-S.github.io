@@ -1,0 +1,37 @@
+body {
+    background-color: rgb(63, 63, 63);
+}
+
+canvas {
+    background-color: rgb(0, 0, 0);
+    display: table-row;
+}
+
+#stuff {
+    background-color: rgb(245, 245, 245);
+    display: flex;
+    justify-content: space-between;
+}
+
+#container {
+    display: table;
+}
+
+.space {
+    margin: auto;
+    margin-top: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border: 2px solid black;
+}
+
+.space a {
+    text-decoration: none;
+    color: black;
+}
+
+.space:hover {
+    cursor:pointer;
+    background: rgb(179, 179, 179);
+}
