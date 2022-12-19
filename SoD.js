@@ -1,3 +1,5 @@
+// I didn't know how to separate stuff into files when I made this
+
 let m = true;
 let r = document.getElementById("restart");
 
